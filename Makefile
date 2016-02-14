@@ -5,7 +5,11 @@ all:
 	rsync --delete --progress -a \
 		--exclude='.*' \
 		--exclude='*~' \
+		--exclude='/test' \
+		--exclude='/client/require.js' \
+		--exclude='/client/text.js' \
 		src/ app/shinysdr/webstatic/ out/
+	cp app/shinysdr/deps/{require,text}.js out/client/
 
 clean:
 	if [[ -e out/ ]]; then rm -r out/; fi
