@@ -1,0 +1,31 @@
+@import url(/manual/manual-style.css);
+
+html {
+  color: white;
+  background: black;
+}
+
+body {
+  padding-top: 1px;  /* ensure our background is flush with top, not moved down by inner margin */
+  
+  color: black;
+  background: white;
+}
+
+#waterfall-bg {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  border: none;
+  padding: 0;
+
+  z-index: -1;
+  
+  /* Disable interactivity. */
+  pointer-events: none;
+  overflow-x: hidden;  /* no permanent scroll bar */
+}
