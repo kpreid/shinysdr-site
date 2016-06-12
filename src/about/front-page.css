@@ -6,7 +6,9 @@ html {
 }
 
 body {
-  padding-top: 1px;  /* ensure our background is flush with top, not moved down by inner margin */
+  /* ensure our background is flush with ends, not moved down by inner margin */
+  padding-top: 1px;
+  padding-bottom: 1px;
   
   color: black;
   background: white;
