@@ -26,55 +26,80 @@
 
 <div id="waterfall-bg" data-widget="Monitor" data-target="monitor"></div>
 
-<h1>ShinySDR: flexible remote software-defined radio receiver</h1>
+<h1>ShinySDR: a software-defined radio receiver</h1>
 
-<ul>
+<ul class="site-sections-list">
   <!--<li><a href="#features">Features</a>-->
-  <li><a href="https://github.com/kpreid/shinysdr/">Source</a>
-  <li><a href="/manual/">Docs</a>
+  <li><a href="https://github.com/kpreid/shinysdr/">Source &amp; Download</a>
+  <li><a href="/manual/">Manual</a>
 </ul>
 
-<p>ShinySDR is the software component of a software-defined radio receiver. When combined with hardware devices such as the USRP, RTL-SDR, or HackRF, it can be used to listen to a wide variety of radio transmissions, and can be extended via plugins to support even more modes.</p>
+<p>ShinySDR is the software component of a software-defined radio receiver. When combined with suitable hardware devices such as the RTL-SDR, HackRF, or USRP, it can be used to listen to or display data from a variety of radio transmissions.</p>
 
-<h2>What&#8217;s shiny about it?</h2>
-
-<p>I (Kevin Reid) created ShinySDR out of dissatisfaction with the user interface of other SDR applications that were available to me. The overall goal is to make, not necessarily the most capable or efficient SDR application, but rather one which is, shall we say, <em>not clunky</em>.</p>
-
-<p>Here&#8217;s some reasons for you to use ShinySDR:</p>
+<h2>Features and applications</h2>
 
 <ul>
-<li><p><strong>Remote operation via browser-based UI:</strong> The receiver can be listened to and remotely controlled over a LAN or the Internet, as well as from the same machine the actual hardware is connected to. Required network bandwidth: 3 Mb/s to 8 Mb/s, depending on settings.</p>
+<li><p><strong>Remote operation via web browser:</strong>
+  The receiver can be listened to and remotely controlled over a LAN or the Internet;
+  the user interface works the same everywhere.</p>
 
-<p>Phone/tablet compatible (though not pretty yet). Internet access is not required for local or LAN operation.</p></li>
+  <p>Requires network capacity of 3 Mb/s or greater, depending on settings.
+  Requires Google Chrome.
+  (Future Firefox compatibility is possible.)
+  Phone/tablet compatible (excluding iOS).</p>
+
+  <p>Internet access is not required for local or LAN operation.</p>
+</li>
+<li><p><strong>Receive audio transmissions and broadcasts:</strong>
+  ShinySDR supports all standard analog modes — AM, FM (narrowband and broadcast), SSB, CW.
+  You can monitor multiple frequencies at once, limited only by hardware bandwidth, and use stereo panning for easier listening.</p>
+</li>
+<li><p><strong>Receive and decode telemetry data:</strong>
+  ShinySDR can decode and display ADS-B, APRS and the telemetry formats supported by <em>rtl_433</em>. When position information is available, it is displayed on a map with animated extrapolated positions.
+  
+  <p>Telemetry support requires installation of additional (open source) software as described in the installation instructions.
+
+<li><p><strong>Frequency database</strong>:
+  Jump to favorite stations; catalog signals you hear; import published tables of band, channel, and station info. Stations with known coordinates can be displayed on the map.</p></li>
+
 <li><p><strong>Persistent waterfall display</strong>: You can zoom, pan, and retune without losing any of the displayed history, whereas many other programs will discard anything which is temporarily offscreen, or the whole thing if the window is resized. If you zoom in to get a look at one signal, you can zoom out again.</p></li>
-<li><p><strong>Frequency database</strong>: Jump to favorite stations; catalog signals you hear; import published tables of band, channel, and station info; take notes. (Note: Saving changes to disk is not yet well-tested.)</p></li>
-<li><p><strong>Map</strong>: Plot station locations from the frequency database, position data from APRS and ADS-B, and mark your own location on the map. (Caveat: No basemap, i.e. streets and borders, is currently present.)</p></li>
 </ul>
 
-<p>Supported modes:</p>
+<h3>Supported modes</h3>
 
 <ul>
-<li>Audio: AM, FM, WFM, SSB, CW.</li>
-<li>Other: APRS, Mode S/ADS-B, VOR.</li>
+<li>Analog audio: AM, FM narrowband, FM broadcast, SSB, CW.</li>
+<li>Digital audio: All those supported by gr-dsd.</li>
+<li>Telemetry: APRS, Mode S/ADS-B, all those supported by rtl_433.</li>
 </ul>
 
-<p>If you&#8217;re a developer, here&#8217;s why you should consider working on ShinySDR (or: here&#8217;s why I wrote my own rather than contributing to another application):</p>
+<h3>For developers</h3>
+
+<p>ShinySDR is designed for ease of modification and extension.</p>
 
 <ul>
-<li><p><strong>All server code is Python</strong>, and has <strong>no mandatory build or install step</strong>.</p></li>
-<li><p><strong>Plugin system</strong> allows adding support for new modes (types of modulation) and hardware devices.</p></li>
-<li><p><strong>Demodulators</strong> prototyped in GNU Radio Companion can be turned into plugins with very little additional code. Control UI can be automatically generated or customized and is based on a generic networking layer.</p></li>
+<li><p><strong>All server code is Python</strong>, and has <strong>no mandatory build or install step</strong>; simply restart the server to apply a change.</p></li>
+<li><p><strong>Plugin system</strong> allows adding support for new modes (types of modulation) and hardware devices.</p>
+
+  <p>Demodulators prototyped in GNU Radio Companion can be turned into plugins with very little additional code. Control UI can be automatically generated or customized and is based on a generic networking layer.</p></li>
 </ul>
 
-<p>On the other hand, you may find that the shiny thing is lacking substance: if you&#8217;re looking for functional features, we do not have the most modes, the best filters, or the lowest CPU usage. Many features are half-implemented (though I try not to have things that blatantly don&#8217;t work). There&#8217;s probably lots of code that will make a real DSP expert cringe.</p>
+<h3>Missing features</h3>
+
+<ul>
+  <li>ShinySDR is not particularly CPU-efficient or otherwise optimized.</li>
+  <li>Remote operation is not suitable for multiple users; there are no independent sessions. Yet.</li>
+  <li>Installation is not very friendly if you're not already familiar with building C and Python software.</li>
+  <li>Many features are incomplete and backward compatibility of new versions is not guaranteed.</li>
+</ul>
 
 <h2>Requirements and Installation</h2>
 
-<p>ShinySDR operates as a specialized web server, running on the machine which has your SDR hardware attached. ShinySDR is known to be compatible with Mac OS X and Linux; in principle, anything which can also run GNU Radio and Python is suitable.</p>
+<p>ShinySDR operates as a specialized web server, running on the machine which has your SDR hardware attached. ShinySDR is known to be compatible with Mac OS X and Linux; in principle, you can use anything which can also run GNU Radio and Python and has enough CPU power (a Raspberry Pi will not do).</p>
 
 <p>The only web browser currently supported as a ShinySDR client is <a href="https://www.google.com/chrome/">Google Chrome</a> (excluding Chrome for iPhone or iPad).
 While it is not <em>intended</em> to be Chrome-only, no attempt has been made to avoid using facilities which are <em>not yet</em> implemented in other browsers.
-Safari (Mac, 7.0.4) is known to work functionally but with broken flexbox UI layout, and Firefox (29) doesn&#8217;t work at all (WebSocket fails to connect).</p>
+Safari (Mac, 9.1.1) and Firefox (47.0) both succeed in connecting but important elements of the UI will not work.</p>
 
 <p>Currently, the client must have the same endianness and floating-point format as the server.
 This may be fixed in the future (if I ever hear of this actually being a problem, or if the data in question is switched to fixed-point to reduce data rate).</p>
