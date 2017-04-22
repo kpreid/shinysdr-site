@@ -8,7 +8,7 @@ all:
 		--exclude='/test' \
 		--exclude='/client/require.js' \
 		--exclude='/client/text.js' \
-		src/ app/shinysdr/webstatic/ out/
+		src/ app/shinysdr/i/webstatic/ out/
 	cp app/shinysdr/deps/require.js app/shinysdr/deps/text.js out/client/
 
 clean:
