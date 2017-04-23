@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean push-out
 
 all:
 	# Note that files in the first source directory override those in the second.
@@ -13,4 +13,8 @@ all:
 	cp app/shinysdr/deps/require.js app/shinysdr/deps/text.js app/shinysdr/deps/measviz/src/* out/client/
 
 clean:
-	if [[ -e out/ ]]; then rm -r out/; fi
+	if [[ -e out/ ]]; then rm -r out/*; fi
+
+push-out: all
+	# assumes that out/ is a git repository with the appropriate gh-pages as upstream
+	cd out/ && git add -A && git commit -v && git push
