@@ -5,7 +5,7 @@ It uses ShinySDR's own static content (manual, etc.), which must be present as a
 Copyright and License
 ---------------------
 
-Copyright 2016 Kevin Reid &lt;kpreid@switchb.org&gt;
+Copyright 2016, 2017 Kevin Reid &lt;kpreid@switchb.org&gt;
 
 ShinySDR is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
