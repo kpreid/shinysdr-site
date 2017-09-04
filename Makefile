@@ -11,6 +11,7 @@ all:
 		--exclude='/client/measviz.*' \
 		src/ app/shinysdr/i/webstatic/ out/
 	cp app/shinysdr/deps/require.js app/shinysdr/deps/text.js app/shinysdr/deps/measviz/src/* out/client/
+	cp app/shinysdr/i/webstatic/client/icon/icon-32.png out/favicon.ico.png
 
 clean:
 	if [[ -e out/ ]]; then rm -r out/*; fi
