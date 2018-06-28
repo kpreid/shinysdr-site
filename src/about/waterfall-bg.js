@@ -34,6 +34,7 @@ define(['types', 'values', 'events', 'widget', 'widgets', 'network', 'database',
   } = coordination;
   const {
     ConstantCell,
+    FakeBulkDataCell,
     StorageCell,
     StorageNamespace,
     makeBlock,
@@ -49,14 +50,8 @@ define(['types', 'values', 'events', 'widget', 'widgets', 'network', 'database',
   var clientStateStorage = new StorageNamespace(sessionStorage, 'shinysdr.client.');
   var clientState = new ClientStateObject(clientStateStorage, null);
   
-  var fftcell = new network.BulkDataCell(
-    '<dummy spectrum>',
-    [{freq: 0, rate: 0}, []],
-    {
-      value_type: new BulkDataT('dff', 'b'),
-      naming: {}
-    }
-  );
+  const fakeInfo = {freq: 0, rate: sampleRate};
+  var fftcell = new FakeBulkDataCell(new BulkDataT('dff', 'b'), [fakeInfo, []]);
   var root = new ConstantCell(makeBlock({
     source: new ConstantCell(makeBlock({
       freq: new ConstantCell(0),
@@ -79,14 +74,12 @@ define(['types', 'values', 'events', 'widget', 'widgets', 'network', 'database',
     scheduler: scheduler
   });
   
-  var buffer = new ArrayBuffer(4+8+4+4 + binCount * 1);
-  var dv = new DataView(buffer);
-  dv.setFloat64(4, 0, true); // freq
-  dv.setFloat32(4+8, sampleRate, true);
-  dv.setFloat32(4+8+4, -128 - minLevel, true); // offset
-  var bytearray = new Int8Array(buffer, 4+8+4+4, binCount);
   var amplitudes = new Float32Array(binCount);
+  var logs = new Float32Array(binCount);
   
+  const noiseFloorAmplitude = 1e-10;
+  
+  // simulated signal state
   var t = 0;
   var burstFreq = [0, 0, 0, 0];
   var burstAmp = [0, 0, 0, 0];
@@ -104,22 +97,21 @@ define(['types', 'values', 'events', 'widget', 'widgets', 'network', 'database',
     var burstChange = Math.floor(Math.random() * burstFreq.length * 10);
     if (burstChange < burstFreq.length) {
       burstFreq[burstChange] = Math.random();
-      burstAmp[burstChange] = Math.pow(10, Math.random() * 6);
+      burstAmp[burstChange] = noiseFloorAmplitude * Math.pow(10, Math.random() * 6);
     }
     
     for (var i = 0; i < binCount; i++) {
-      amplitudes[i] = Math.random();
+      amplitudes[i] = Math.random() * noiseFloorAmplitude;
     }
-    addSignal(0.2 + t / 1000, 100);  // chirp
-    addSignal(0.48 + 0.002 * Math.sin(t * 0.8), 100);  // FM
+    addSignal(0.2 + t / 1000, noiseFloorAmplitude * 100);  // chirp
+    addSignal(0.48 + 0.002 * Math.sin(t * 0.8), noiseFloorAmplitude * 100);  // FM
     for (var i = 0; i < burstFreq.length; i++) {
       addSignal(burstFreq[i], burstAmp[i]);
     }
     for (var i = 0; i < binCount; i++) {
-      var scaledLog = Math.max(-128, Math.log10(amplitudes[i]) * 10 - 100);
-      bytearray[i] = scaledLog;
+      logs[i] = (Math.log10(amplitudes[i]) * 10);
     }
-    fftcell._update(buffer);
+    fftcell._update([fakeInfo, logs]);
   }
   
   function loop() {
