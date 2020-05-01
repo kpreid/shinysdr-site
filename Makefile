@@ -20,9 +20,9 @@ push-out: all
 	# assumes that out/ is a git repository with the appropriate gh-pages as upstream
 	cd out/ && git add -A && git commit -v && git push
 
-app-prep: app app/shinysdr/deps/require.js
+app-prep: app/setup.py app/shinysdr/deps/require.js
 
-app:
+app/setup.py:
 	git submodule update --init
 
 app/shinysdr/deps/require.js:
