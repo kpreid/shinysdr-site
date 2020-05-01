@@ -1,11 +1,11 @@
 This is the source for the static “advertising” web site for ShinySDR.
 
-It uses ShinySDR's own static content (manual, etc.), which must be present as a directory/symlink named "app/" (this might become a Git submodule in the future).
+It uses ShinySDR's own static content (manual, etc.), via a Git submodule to ensure compatible versioning.
 
 Copyright and License
 ---------------------
 
-Copyright 2016, 2017 Kevin Reid &lt;kpreid@switchb.org&gt;
+Copyright 2016, 2017, 2020 Kevin Reid &lt;kpreid@switchb.org&gt;
 
 ShinySDR is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

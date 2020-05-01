@@ -1,6 +1,6 @@
-.PHONY: all clean push-out
+.PHONY: all app-prep clean push-out
 
-all:
+all: app-prep
 	# Note that files in the first source directory override those in the second.
 	rsync --delete --progress -a \
 		--exclude='.*' \
@@ -19,3 +19,11 @@ clean:
 push-out: all
 	# assumes that out/ is a git repository with the appropriate gh-pages as upstream
 	cd out/ && git add -A && git commit -v && git push
+
+app-prep: app app/shinysdr/deps/require.js
+
+app:
+	git submodule update --init
+
+app/shinysdr/deps/require.js:
+	cd app && python setup.py fetch_deps
